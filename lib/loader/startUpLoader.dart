@@ -14,7 +14,7 @@ class _StartUpLoaderState extends State<StartUpLoader> with SingleTickerProvider
     super.initState();
     animationController=AnimationController(
       vsync:this,
-      duration:Duration(milliseconds: 500),
+      duration:Duration(milliseconds: 2500),
     );
     animationController.forward();
     animationController.addListener(() {
@@ -34,26 +34,34 @@ class _StartUpLoaderState extends State<StartUpLoader> with SingleTickerProvider
           return ErrorPage();
         switch (snap.connectionState) {
           case ConnectionState.done:
+            print("done");
             return Homepage();
             break;
           case ConnectionState.active:
+          print("active");
             return _loaderWidget();
               break;
           case ConnectionState.none:
+          print("none");
             return _loaderWidget();
             break;
           case ConnectionState.waiting:
+          print("wait");
             return _loaderWidget();
             break;
           default:
+          print("ddef");
             return _loaderWidget();
         }
       }
     );
   }
-  loadData(){
+
+  loadData()async{
     //Load Custom User Data
+    return new Future.delayed(const Duration(seconds: 5), () => "1");
   }
+
   _loaderWidget(){
     return Container(
       alignment: Alignment.center,
@@ -64,6 +72,7 @@ class _StartUpLoaderState extends State<StartUpLoader> with SingleTickerProvider
       )
     );
   }
+
   @override
   void dispose() {
     animationController.dispose();
