@@ -1,8 +1,11 @@
+import 'package:easy_aquarium_manager/homePage.dart';
 import 'package:easy_aquarium_manager/loader/startUpLoader.dart';
-import 'package:easy_aquarium_manager/login.dart';
+import 'package:easy_aquarium_manager/LoginRegistration/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'Aquario/AquarioDetatil.dart';
+import 'LoginRegistration/register.dart';
 import 'errorPage.dart';
 import 'loader/loader.dart';
 
@@ -12,37 +15,55 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-  final FirebaseAuth auth = FirebaseAuth.instance;
-
+  
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _initialization,
-      builder: (context, snapshot) {
-        // Check for errors
-        if (snapshot.hasError) {
-          return ErrorPage();
-        }
-        switch (snapshot.connectionState) {
-          case ConnectionState.done:
-            return _handleLoginScreen();
-            break;
-          default:
-            return Loader();
-        }
+    return MaterialApp(
+      initialRoute: "/",
+      routes: {
+        'Login':(context)=>Login(),
+        'Register':(context)=>Register(),
+        'HomePage':(context)=>Homepage(),
+        'AquarioDetail':(context)=>AquarioDetail(),
       },
+      theme: ThemeData(
+        backgroundColor: Colors.lightBlue[100]
+      ),
+      home: FutureBuilder(
+        future: Firebase.initializeApp(),
+        builder: (context, snapshot) {
+          // Check for errors
+          if (snapshot.hasError) {
+            print("error:\t"+snapshot.error);
+            return ErrorPage();
+          }
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              return _handleLoginScreen(context);
+              break;
+            case ConnectionState.none:
+              return ErrorPage();
+              break;
+            case ConnectionState.waiting:
+              return Loader();
+            default:
+              return Loader();
+          }
+        },
+      )
     );
   }
-  _handleLoginScreen(){
-    auth.authStateChanges().listen((User user) {
-      if (user == null) {
-        print('User is currently signed out!');
+  _handleLoginScreen(BuildContext context){
+    return StreamBuilder<User>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (BuildContext context, snapshot) {
+        if(snapshot.hasError){
+          return ErrorPage();
+        }else if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
+          return StartUpLoader();
+        }
         return Login();
-      } else {
-        print('User is signed in!');
-        return StartUpLoader();
-      }
-    });
+      },
+    );
   }
 }
