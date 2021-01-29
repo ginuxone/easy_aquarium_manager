@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -42,6 +43,7 @@ class _LoginState extends State<Login> {
           Card(
             margin: EdgeInsets.all(10.0),
             child: Form(
+              key: _formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction, 
               child:Column(
                 children: [
@@ -104,7 +106,10 @@ class _LoginState extends State<Login> {
                         child: Text("Login"),
                         onPressed: (){
                           if(_formKey.currentState.validate()){
-                            print("awesome");
+                            FirebaseAuth.instance.signInWithEmailAndPassword(
+                              email: usernameController.text,
+                              password: passwordController.text
+                            );
                           }
                         }
                       ),
