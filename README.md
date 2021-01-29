@@ -15,6 +15,10 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+## Dependencies
+- firebase_core: "^0.7.0"
+- firebase_auth: ^0.20.0+1
+
 ## Logo And Images
 - [Water vector created by djvstock - www.freepik.com](https://www.freepik.com/vectors/water)
 
