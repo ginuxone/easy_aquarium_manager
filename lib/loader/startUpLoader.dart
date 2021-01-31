@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_aquarium_manager/Aquario/AquarioCard.dart';
+import 'package:easy_aquarium_manager/Aquario/AquarioModel.dart';
+
 import 'package:easy_aquarium_manager/errorPage.dart';
 import 'package:easy_aquarium_manager/homePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class StartUpLoader extends StatefulWidget {
@@ -9,9 +14,12 @@ class StartUpLoader extends StatefulWidget {
 
 class _StartUpLoaderState extends State<StartUpLoader> with SingleTickerProviderStateMixin {
   AnimationController animationController;
+  List<AquarioCard> aquariums;
+  Future<dynamic> loadedData;
   @override
   void initState() {
     super.initState();
+    aquariums=List<AquarioCard>();
     animationController=AnimationController(
       vsync:this,
       duration:Duration(milliseconds: 2500),
@@ -24,18 +32,19 @@ class _StartUpLoaderState extends State<StartUpLoader> with SingleTickerProvider
         });
       }
     });
+    loadedData=loadData();
   }
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: loadData(),
+      future: loadedData,
       builder: (BuildContext context,AsyncSnapshot snap){
         if(snap.hasError)
           return ErrorPage();
         switch (snap.connectionState) {
           case ConnectionState.done:
             print("done");
-            return Homepage();
+            return Homepage(aquarioList: aquariums,);
             break;
           case ConnectionState.active:
           print("active");
@@ -59,7 +68,18 @@ class _StartUpLoaderState extends State<StartUpLoader> with SingleTickerProvider
 
   loadData()async{
     //Load Custom User Data
-    return new Future.delayed(const Duration(seconds: 5), () => "1");
+    return await FirebaseFirestore.instance.collection("Aquariums").where("AuthID", isEqualTo:FirebaseAuth.instance.currentUser.uid).get()
+    .then((value){
+      if(value.size>0){
+        for (Map aq in value.docs.first.data()["Aquarium"]) {
+          aquariums.add(
+            AquarioCard(
+              aquarioModel:AquarioModel().fromMap(aq)
+            )
+          );
+        }
+      }
+    });
   }
 
   _loaderWidget(){
