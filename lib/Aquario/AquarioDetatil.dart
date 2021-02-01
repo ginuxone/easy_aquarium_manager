@@ -1,3 +1,4 @@
+import 'package:easy_aquarium_manager/Aquario/AquarioModel.dart';
 import 'package:flutter/material.dart';
 
 class AquarioDetail extends StatefulWidget {
@@ -8,8 +9,24 @@ class AquarioDetail extends StatefulWidget {
 class _AquarioDetailState extends State<AquarioDetail> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    AquarioModel aquarioModel = ModalRoute.of(context).settings.arguments;
+    return Scaffold(
+      body: Column(
+        children:[
+          Stack(
+            children: [
+              Hero(
+                tag: aquarioModel.key,
+                child: Image.asset("assets/logo/logo.jpg"),
+              ),
+              Positioned(
+                bottom: 0,
+                child: Text(aquarioModel.name),
+              )
+            ],
+          ),
+        ]
+      ),
     );
   }
 }
