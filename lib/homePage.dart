@@ -43,20 +43,6 @@ class _HomepageState extends State<Homepage> {
       body: ListView(
         children: widget.aquarioList,
       ),
-      // body: Container(
-      //   child: Column(
-      //     children: [
-      //       Padding(
-      //         padding: const EdgeInsets.all(10.0),
-      //         child: Text("Your Aquariums"),
-      //       ),
-      //       GridView.count(
-      //         crossAxisCount: 2,
-      //         children: widget.aquarioList,
-      //       ),
-      //     ],
-      //   ),
-      // )
     );
   }
 }
