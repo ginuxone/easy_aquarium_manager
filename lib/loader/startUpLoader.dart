@@ -72,9 +72,10 @@ class _StartUpLoaderState extends State<StartUpLoader> with SingleTickerProvider
     .then((value){
       if(value.size>0){
         for (Map aq in value.docs.first.data()["Aquarium"]) {
+          AquarioModel aquarioModel=AquarioModel().fromMap(aq);
           aquariums.add(
             AquarioCard(
-              aquarioModel:AquarioModel().fromMap(aq)
+              aquarioModel:aquarioModel
             )
           );
         }
