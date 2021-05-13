@@ -27,4 +27,7 @@ class _AquarioDetailState extends State<AquarioDetail> {
       ]),
     );
   }
+  addPhoto(){
+    
+  }
 }
