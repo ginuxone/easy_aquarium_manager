@@ -9,24 +9,22 @@ class AquarioDetail extends StatefulWidget {
 class _AquarioDetailState extends State<AquarioDetail> {
   @override
   Widget build(BuildContext context) {
-    AquarioModel aquarioModel = ModalRoute.of(context).settings.arguments;
+    AquarioModel aquarioModel = ModalRoute.of(context)!.settings.arguments as AquarioModel;
     return Scaffold(
-      body: Column(
-        children:[
-          Stack(
-            children: [
-              Hero(
-                tag: aquarioModel.key,
-                child: Image.asset("assets/logo/logo.jpg"),
-              ),
-              Positioned(
-                bottom: 0,
-                child: Text(aquarioModel.name),
-              )
-            ],
-          ),
-        ]
-      ),
+      body: Column(children: [
+        Stack(
+          children: [
+            Hero(
+              tag: aquarioModel.key,
+              child: Image.asset("assets/logo/logo.jpg"),
+            ),
+            Positioned(
+              bottom: 0,
+              child: Text(aquarioModel.name),
+            )
+          ],
+        ),
+      ]),
     );
   }
 }

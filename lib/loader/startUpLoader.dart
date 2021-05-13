@@ -13,85 +13,80 @@ class StartUpLoader extends StatefulWidget {
 }
 
 class _StartUpLoaderState extends State<StartUpLoader> with SingleTickerProviderStateMixin {
-  AnimationController animationController;
-  List<AquarioCard> aquariums;
-  Future<dynamic> loadedData;
+  late AnimationController animationController;
+  late List<AquarioCard> aquariums;
+  late Future<dynamic> loadedData;
   @override
   void initState() {
     super.initState();
-    aquariums=List<AquarioCard>();
-    animationController=AnimationController(
-      vsync:this,
-      duration:Duration(milliseconds: 2500),
+    aquariums = <AquarioCard>[];
+    animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 2500),
     );
     animationController.forward();
     animationController.addListener(() {
-      if(animationController.status==AnimationStatus.completed){
+      if (animationController.status == AnimationStatus.completed) {
         setState(() {
           animationController.repeat();
         });
       }
     });
-    loadedData=loadData();
+    loadedData = loadData();
   }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: loadedData,
-      builder: (BuildContext context,AsyncSnapshot snap){
-        if(snap.hasError)
-          return ErrorPage();
-        switch (snap.connectionState) {
-          case ConnectionState.done:
-            print("done");
-            return Homepage(aquarioList: aquariums,);
-            break;
-          case ConnectionState.active:
-          print("active");
-            return _loaderWidget();
-              break;
-          case ConnectionState.none:
-          print("none");
-            return _loaderWidget();
-            break;
-          case ConnectionState.waiting:
-          print("wait");
-            return _loaderWidget();
-            break;
-          default:
-          print("ddef");
-            return _loaderWidget();
-        }
-      }
-    );
+        future: loadedData,
+        builder: (BuildContext context, AsyncSnapshot snap) {
+          if (snap.hasError) return ErrorPage();
+          switch (snap.connectionState) {
+            case ConnectionState.done:
+              print("done");
+              return Homepage(
+                aquarioList: aquariums,
+              );
+            case ConnectionState.active:
+              print("active");
+              return _loaderWidget();
+            case ConnectionState.none:
+              print("none");
+              return _loaderWidget();
+            case ConnectionState.waiting:
+              print("wait");
+              return _loaderWidget();
+            default:
+              print("ddef");
+              return _loaderWidget();
+          }
+        });
   }
 
-  loadData()async{
+  loadData() async {
     //Load Custom User Data
-    return await FirebaseFirestore.instance.collection("Aquariums").where("AuthID", isEqualTo:FirebaseAuth.instance.currentUser.uid).get()
-    .then((value){
-      if(value.size>0){
+    return await FirebaseFirestore.instance
+        .collection("Aquariums")
+        .where("AuthID", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      if (value.size > 0) {
         for (Map aq in value.docs.first.data()["Aquarium"]) {
-          AquarioModel aquarioModel=AquarioModel().fromMap(aq);
-          aquariums.add(
-            AquarioCard(
-              aquarioModel:aquarioModel
-            )
-          );
+          AquarioModel aquarioModel = AquarioModel(key: '', name: '').fromMap(aq);
+          aquariums.add(AquarioCard(aquarioModel: aquarioModel));
         }
       }
     });
   }
 
-  _loaderWidget(){
+  _loaderWidget() {
     return Container(
-      alignment: Alignment.center,
-      color: Colors.lightBlue[100],
-      child: RotationTransition(
-        turns: Tween(begin: 0.0,end: 1.0).animate(animationController),
-        child: Image(image: AssetImage("assets/logo/logo.jpg")),
-      )
-    );
+        alignment: Alignment.center,
+        color: Colors.lightBlue[100],
+        child: RotationTransition(
+          turns: Tween(begin: 0.0, end: 1.0).animate(animationController),
+          child: Image(image: AssetImage("assets/logo/logo.jpg")),
+        ));
   }
 
   @override
