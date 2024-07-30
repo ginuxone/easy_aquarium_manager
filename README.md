@@ -1,6 +1,6 @@
 # easy_aquarium_manager
-
-A new Flutter project.
+[![FlutterBuild](https://github.com/ginuxone/easy_aquarium_manager/actions/workflows/flutter_build.yml/badge.svg)](https://github.com/ginuxone/easy_aquarium_manager/actions/workflows/flutter_build.yml)
+A new Flutter project that aims to have a free to use aquarium manager to handle a single or multiple aquariums
 
 ## Getting Started
 
