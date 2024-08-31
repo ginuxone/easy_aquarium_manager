@@ -38,7 +38,7 @@ class _RegisterState extends State<Register> {
                   enabledBorder: OutlineInputBorder(),
                 ),
                 validator: (value){
-                  if(value.isEmpty)
+                  if(value==null || value.isEmpty)
                     return "Please enter your mail";
                   return null;
                 },
@@ -55,7 +55,7 @@ class _RegisterState extends State<Register> {
                   enabledBorder: OutlineInputBorder(),
                 ),
                 validator: (value){
-                  if(value.isEmpty)
+                  if(value ==null || value.isEmpty)
                     return "Please enter your password";
                   return null;
                 },
@@ -80,16 +80,16 @@ class _RegisterState extends State<Register> {
               ButtonBar(
                 alignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text("Cancel"),
                     onPressed: (){
 
                     }
                   ),
-                  RaisedButton(
+                  ElevatedButton(
                     child: Text("Create Account"),
                     onPressed: (){
-                      if(_formKey.currentState.validate()){
+                      if(_formKey.currentState!.validate()){
                         FirebaseAuth.instance.createUserWithEmailAndPassword(
                           email: username.text,
                           password: password.text,

@@ -22,7 +22,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       body: ListView(shrinkWrap: true, children: [
         Container(
           height: 200,
@@ -90,7 +89,7 @@ class _LoginState extends State<Login> {
                     alignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red)),
+                          style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(Colors.red)),
                           child: Text("Cancel"),
                           onPressed: () {
                             setState(() {
@@ -99,7 +98,7 @@ class _LoginState extends State<Login> {
                             });
                           }),
                       ElevatedButton(
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.green)),
+                          style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(Colors.green)),
                           child: Text("Login"),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
@@ -117,7 +116,7 @@ class _LoginState extends State<Login> {
         ),
         Text("You dont have an account? Register"),
         ElevatedButton(
-            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.lightBlue)),
+            style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(Colors.lightBlue)),
             child: Text("Register"),
             onPressed: () {
               Navigator.pushNamed(context, 'Register');
