@@ -29,7 +29,6 @@ class MyApp extends StatelessWidget {
           'AquarioDetail': (context) => AquarioDetail(),
           'AquarioCreator': (context) => AquarioCreator(),
         },
-        theme: ThemeData(backgroundColor: Colors.lightBlue[100]),
         home: FutureBuilder(
           future: Firebase.initializeApp(),
           builder: (context, snapshot) {

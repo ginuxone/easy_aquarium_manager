@@ -31,7 +31,7 @@ class _HomepageState extends State<Homepage> {
             title: TextButton.icon(
                 icon: Icon(Icons.vpn_key_outlined),
                 label: Text("Logout from the app"),
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red.shade300)),
+                style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(Colors.red.shade300)),
                 onPressed: () {
                   FirebaseAuth.instance.signOut();
                 }),
